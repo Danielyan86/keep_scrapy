@@ -16,20 +16,24 @@ def scrapy_keep(page_number):
         content = response.text
         res = last_id_pattern.findall(content)
         more_page_id = res[0]
-        download_pic(content, i)
+        download_pic(content)
         i = i + 1
 
 
-def download_pic(content, num):
-    pattern = re.compile(r"""(http://static1.*?jpg)""")
+def download_pic(content):
+    pattern = re.compile(r"""(http://static1.*?jpg)""")  # 再返回json数据中匹配图片格式URL
     res = pattern.findall(content)
-    i = 0
+    pattern_file_name = re.compile(r'''\d{4}/\d{2}/\d{2}/\d{2}/(.*)''')
     for item in res:
         print(item)
-        response = requests.get(item)
-        with open("./pictures/{0}{1}.jpg".format(num, i), "wb") as f:
-            f.write(response.content)
-        i = i + 1
+        res = pattern_file_name.search(item)
+        if res:
+            file_name = res.groups()[0]
+            response = requests.get(item)
+            with open("./pictures/{0}".format(file_name), "wb") as f:
+                f.write(response.content)
+        else:
+            raise AssertionError("can't get file name")
 
 
 if __name__ == '__main__':
