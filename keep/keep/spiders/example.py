@@ -4,20 +4,22 @@ from scrapy_splash import SplashRequest
 import re
 import requests
 
+i = 0
+
 
 class KeepSpider(scrapy.Spider):
     name = 'keep'
     allowed_domains = ['gotokeep.com']
-    start_urls = ['https://gotokeep.com/explore']
-    pattern = re.compile(r'"(http.*jpg.*)" class|(http.*jpg.*)\)"')
+    start_urls = ["https://gotokeep.com/explore/more?lastId=5b075485ba352217ebc5f58c"]
+    pattern = re.compile(r'"(http.*jpg.*)" class|(http.*jpg.*)\)"|(http.*?jpg.*?95)')
 
     def parse(self, response):
         # print(response.body)
         print("=" * 100)
         text_list = (response.xpath("//div[@class='img']").extract())
-        # print(text_list)
+        print(text_list)
         # response.body is a result of render.html call; it contains HTML processed by a browser.
-        i = 0
+        global i
         for item in text_list:
             try:
                 res = self.pattern.search(item)

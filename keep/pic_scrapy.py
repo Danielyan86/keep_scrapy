@@ -5,15 +5,12 @@ import re
 def scrapy_keep():
     domain = "https://gotokeep.com"
     response = requests.get("https://gotokeep.com/explore")
-    # print(response.content)
     pattern = re.compile(r'''<div data-url="/explore/more?(.*)" ''')
     find_res = pattern.findall(response.text)
     more_page_id = find_res[0]
-    # find_res = pattern.search(response.text)
-    print(find_res)
     last_id_pattern = re.compile(r'''lastId":"(.*?)"}''')
     i = 0
-    while i < 10:
+    while i < 10:  # 设置爬取页面数目，一个页面大概14张左右图片
         more_page_url = "{0}/explore/more?{1}".format(domain, more_page_id)
         response = requests.get(more_page_url)
         content = response.text
