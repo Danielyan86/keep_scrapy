@@ -23,7 +23,7 @@ def scrapy_keep(page_number):
 def download_pic(content):
     pattern = re.compile(r"""(http://static1.*?jpg)""")  # 再返回json数据中匹配图片格式URL
     res = pattern.findall(content)
-    pattern_file_name = re.compile(r'''\d{4}/\d{2}/\d{2}/\d{2}/(.*)''')
+    pattern_file_name = re.compile(r'''\d{4}/\d{2}/\d{2}/\d{2}/(.*)''') # 获取图片hash id
     for item in res:
         print(item)
         res = pattern_file_name.search(item)
