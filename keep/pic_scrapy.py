@@ -2,7 +2,7 @@ import requests
 import re
 
 
-def scrapy_keep():
+def scrapy_keep(page_number):
     domain = "https://gotokeep.com"
     response = requests.get("https://gotokeep.com/explore")
     pattern = re.compile(r'''<div data-url="/explore/more?(.*)" ''')
@@ -10,7 +10,7 @@ def scrapy_keep():
     more_page_id = find_res[0]
     last_id_pattern = re.compile(r'''lastId":"(.*?)"}''')
     i = 0
-    while i < 10:  # 设置爬取页面数目，一个页面大概14张左右图片
+    while i < page_number:  # 设置爬取页面数目，一个页面大概14张左右图片
         more_page_url = "{0}/explore/more?{1}".format(domain, more_page_id)
         response = requests.get(more_page_url)
         content = response.text
@@ -25,7 +25,6 @@ def download_pic(content, num):
     res = pattern.findall(content)
     i = 0
     for item in res:
-        print("=" * 40)
         print(item)
         response = requests.get(item)
         with open("./pictures/{0}{1}.jpg".format(num, i), "wb") as f:
@@ -34,4 +33,5 @@ def download_pic(content, num):
 
 
 if __name__ == '__main__':
-    scrapy_keep()
+    page_number = 2
+    scrapy_keep(page_number)
