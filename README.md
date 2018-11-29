@@ -8,3 +8,6 @@ keep 爬虫
 
 # 效果截图
 ![keep_pictures](https://raw.githubusercontent.com/Danielyan86/keep_scrapy/master/readme_pic/keep_pic.png)
+
+# 更多详细介绍
+https://zhuanlan.zhihu.com/p/42811833
